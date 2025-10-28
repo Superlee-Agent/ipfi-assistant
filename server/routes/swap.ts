@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { CHAINS } from "../../src/utils/config";
+import { CHAINS } from "@shared/ipfi/utils/config";
 
 export const getSwapQuote: RequestHandler = async (req, res) => {
   try {
