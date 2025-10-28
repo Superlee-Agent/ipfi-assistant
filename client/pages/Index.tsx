@@ -16,9 +16,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { swapAgent } from "../../src/agents/swapAgent";
-import { CHAINS, TOKENS, getChain, findToken } from "../../src/utils/config";
-import { fromBaseUnits } from "../../src/utils/helpers";
+import { swapAgent } from "@shared/ipfi/agents/swapAgent";
+import { CHAINS, TOKENS, getChain, findToken } from "@shared/ipfi/utils/config";
+import { fromBaseUnits } from "@shared/ipfi/utils/helpers";
 import { toast } from "sonner";
 
 export default function Index() {
