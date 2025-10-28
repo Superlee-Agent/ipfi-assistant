@@ -22,11 +22,11 @@ import { fromBaseUnits } from "@shared/ipfi/utils/helpers";
 import { toast } from "sonner";
 
 export default function Index() {
-  const [chain, setChain] = useState<keyof typeof CHAINS>("base");
+  const [chain, setChain] = useState<keyof typeof CHAINS>("ethereum");
   const [sell, setSell] = useState("USDC");
   const [buy, setBuy] = useState("ETH");
   const [amount, setAmount] = useState("100");
-  const [prompt, setPrompt] = useState("Tolong swap 100 USDC ke ETH di Base");
+  const [prompt, setPrompt] = useState("Tolong swap 100 USDC ke ETH di Ethereum");
 
   const tokens = useMemo(
     () => TOKENS.filter((t) => t.chain === chain),
