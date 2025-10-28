@@ -51,12 +51,12 @@ export async function getQuote(params: GetQuoteParams): Promise<ZeroExQuote> {
   const { chain, sellToken, buyToken, amount, taker, side = "sell" } = params;
   const base = CHAINS[chain].zeroExBaseUrl;
 
-  const sell = tokenToAddress(chain, sellToken);
-  const buy = tokenToAddress(chain, buyToken);
+  const sell = tokenToParam(chain, sellToken);
+  const buy = tokenToParam(chain, buyToken);
 
   const query = new URLSearchParams();
-  query.set("sellToken", sell.address);
-  query.set("buyToken", buy.address);
+  query.set("sellToken", sell.id);
+  query.set("buyToken", buy.id);
 
   if (side === "sell") {
     query.set("sellAmount", toBaseUnits(amount, sell.decimals));
