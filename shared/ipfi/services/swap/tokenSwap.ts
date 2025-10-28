@@ -29,14 +29,22 @@ export type GetQuoteParams = {
   side?: "sell" | "buy"; // amount refers to sell or buy side
 };
 
-function tokenToAddress(chain: Chain["key"], token: string): { address: string; decimals: number } {
+function tokenToParam(chain: Chain["key"], token: string): { id: string; decimals: number } {
   if (/^0x[a-fA-F0-9]{40}$/.test(token)) {
-    // Address provided; assume 18 decimals by default (most ERC-20) and 18 for native placeholder address
-    return { address: token, decimals: 18 };
+    return { id: token, decimals: 18 };
   }
   const known = findToken(chain, token);
   if (!known) throw new Error(`Unknown token ${token} on ${chain}`);
-  return { address: known.address, decimals: known.decimals };
+  const nativeSymbols: Record<Chain["key"], string> = {
+    ethereum: "ETH",
+    polygon: "MATIC",
+    arbitrum: "ETH",
+    optimism: "ETH",
+    base: "ETH",
+    bnb: "BNB",
+  };
+  const isNative = known.symbol.toUpperCase() === nativeSymbols[chain];
+  return { id: isNative ? nativeSymbols[chain] : known.address, decimals: known.decimals };
 }
 
 export async function getQuote(params: GetQuoteParams): Promise<ZeroExQuote> {
