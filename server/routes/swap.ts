@@ -9,13 +9,9 @@ export const getSwapQuote: RequestHandler = async (req, res) => {
     }
     const chain = CHAINS[chainKey as keyof typeof CHAINS];
 
-    // Use canonical multi-chain 0x endpoint + chainId for maximum compatibility
-    const url = new URL("https://api.0x.org/swap/v1/quote");
-    url.searchParams.set("chainId", String(chain.id));
+    const url = new URL(chain.zeroExBaseUrl + "/swap/v1/quote");
 
-    // Pass-through parameters except our internal 'chain'
     for (const [k, v] of Object.entries(req.query)) {
-      if (k === "chain") continue;
       if (v != null) url.searchParams.set(k, String(v));
     }
 
