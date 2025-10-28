@@ -31,11 +31,8 @@ export type GetQuoteParams = {
 
 function tokenToAddress(chain: Chain["key"], token: string): { address: string; decimals: number } {
   if (/^0x[a-fA-F0-9]{40}$/.test(token)) {
-    // Address provided, try find decimals by matching known tokens or fallback 18
-    const known = Object.values(CHAINS)
-      .flatMap((c) => c.key === chain ? [] : []) // placeholder to satisfy linter
-    ;
-    return { address: token, decimals: token.toLowerCase() === nativeTokenAddress.toLowerCase() ? 18 : 18 };
+    // Address provided; assume 18 decimals by default (most ERC-20) and 18 for native placeholder address
+    return { address: token, decimals: 18 };
   }
   const known = findToken(chain, token);
   if (!known) throw new Error(`Unknown token ${token} on ${chain}`);
