@@ -7,11 +7,15 @@ export const getSwapQuote: RequestHandler = async (req, res) => {
     if (!Object.keys(CHAINS).includes(chainKey)) {
       return res.status(400).json({ error: "Unsupported chain" });
     }
-    const base = CHAINS[chainKey as keyof typeof CHAINS].zeroExBaseUrl;
+    const chain = CHAINS[chainKey as keyof typeof CHAINS];
 
-    const url = new URL(base + "/swap/v1/quote");
-    // Pass-through parameters
+    // Use canonical multi-chain 0x endpoint + chainId for maximum compatibility
+    const url = new URL("https://api.0x.org/swap/v1/quote");
+    url.searchParams.set("chainId", String(chain.id));
+
+    // Pass-through parameters except our internal 'chain'
     for (const [k, v] of Object.entries(req.query)) {
+      if (k === "chain") continue;
       if (v != null) url.searchParams.set(k, String(v));
     }
 
