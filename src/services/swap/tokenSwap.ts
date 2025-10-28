@@ -60,7 +60,9 @@ export async function getQuote(params: GetQuoteParams): Promise<ZeroExQuote> {
   }
   if (taker) query.set("takerAddress", taker);
 
-  const url = `${base}/swap/v1/quote?${query.toString()}`;
+  const url = (typeof window === "undefined")
+    ? `${base}/swap/v1/quote?${query.toString()}`
+    : `/api/swap/quote?chain=${encodeURIComponent(chain)}&${query.toString()}`;
   const res = await fetch(url);
   if (!res.ok) {
     const text = await res.text();
