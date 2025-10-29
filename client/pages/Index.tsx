@@ -60,18 +60,6 @@ export default function Index() {
             <Button size="sm" className="gap-2"><WalletMinimal className="h-4 w-4" /> Connect Wallet</Button>
           </div>
         </div>
-        <div className="border-t">
-          <div className="max-w-6xl mx-auto px-4 py-2 flex items-center gap-3 text-sm">
-            <span className="text-xs px-2 py-0.5 rounded-full bg-fuchsia-500/15 text-fuchsia-300 border border-fuchsia-500/30">Story Chain</span>
-            {price !== null && (
-              <span className="text-xs text-muted-foreground">
-                STORY ${price.toFixed(2)} {change !== null && (
-                  <em className={cn("not-italic ml-1", change >= 0 ? "text-emerald-400" : "text-rose-400")}>{change >= 0 ? `+${change}%` : `${change}%`}</em>
-                )}
-              </span>
-            )}
-          </div>
-        </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-4">
