@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { getSwapQuote } from "./routes/swap";
+import { getStoryQuote } from "./routes/story";
 
 export function createServer() {
   const app = express();
