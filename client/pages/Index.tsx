@@ -94,13 +94,6 @@ export default function Index() {
                 <Send className="h-4 w-4" />
               </Button>
             </div>
-            {stats?.gas_prices && (
-              <div className="mt-2 text-xs text-muted-foreground flex gap-4">
-                <span>Gas: slow {stats.gas_prices.slow}</span>
-                <span>avg {stats.gas_prices.average}</span>
-                <span>fast {stats.gas_prices.fast}</span>
-              </div>
-            )}
           </div>
         </div>
       </main>
