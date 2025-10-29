@@ -2,7 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Send, ImagePlus, WalletMinimal } from "lucide-react";
+import { Send, WalletMinimal } from "lucide-react";
+
+// Story chain stats shape
+type StoryStats = {
+  coin_image: string | null;
+  coin_price: string | null;
+  coin_price_change_percentage: number | null;
+  gas_prices?: { slow: number; average: number; fast: number } | null;
+};
 
 type Message = { id: string; role: "assistant" | "user"; text: string };
 
@@ -11,15 +19,24 @@ export default function Index() {
     {
       id: "m1",
       role: "assistant",
-      text: "Hello, I am Radut Agent. Attach an image and I’ll analyze it automatically.",
+      text: "Hello, I am Radut Agent. I’m connected to Story chain. Ask me anything.",
     },
   ]);
   const [text, setText] = useState("");
+  const [stats, setStats] = useState<StoryStats | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
+
+  useEffect(() => {
+    // Fetch token/network data from StoryScan
+    fetch("https://www.storyscan.io/api/v2/stats")
+      .then((r) => r.json())
+      .then((j) => setStats(j as StoryStats))
+      .catch(() => void 0);
+  }, []);
 
   function onSend() {
     const t = text.trim();
@@ -28,16 +45,24 @@ export default function Index() {
     setText("");
   }
 
+  const price = stats?.coin_price ? Number(stats.coin_price) : null;
+  const change = stats?.coin_price_change_percentage ?? null;
+
   return (
     <div className="min-h-screen bg-[radial-gradient(1200px_600px_at_50%_-200px,theme(colors.fuchsia.600/.15),transparent)]">
       <header className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-background/60 bg-background/50 border-b">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <div className="h-6 w-6 rounded-md bg-gradient-to-br from-pink-500 to-fuchsia-600" />
             <span className="font-semibold">IP Assistant</span>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-fuchsia-500/15 text-fuchsia-300 border border-fuchsia-500/30">Story Chain</span>
+            {price !== null && (
+              <span className="hidden sm:inline text-xs text-muted-foreground">STORY ${price.toFixed(2)} {change !== null && (
+                <em className={cn("not-italic ml-1", change >= 0 ? "text-emerald-400" : "text-rose-400")}>{change >= 0 ? `+${change}%` : `${change}%`}</em>
+              )}</span>
+            )}
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>Guest</span>
             <Button size="sm" className="gap-2"><WalletMinimal className="h-4 w-4" /> Connect Wallet</Button>
           </div>
         </div>
@@ -59,9 +84,6 @@ export default function Index() {
 
           <div className="sticky bottom-4 self-end">
             <div className="mt-4 flex items-center gap-2 rounded-xl border bg-background/70 backdrop-blur p-2">
-              <Button variant="ghost" size="icon" className="text-muted-foreground" title="Attach image">
-                <ImagePlus className="h-5 w-5" />
-              </Button>
               <Input
                 className="h-12 flex-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent"
                 placeholder="Type a message..."
@@ -78,6 +100,13 @@ export default function Index() {
                 <Send className="h-4 w-4" />
               </Button>
             </div>
+            {stats?.gas_prices && (
+              <div className="mt-2 text-xs text-muted-foreground flex gap-4">
+                <span>Gas: slow {stats.gas_prices.slow}</span>
+                <span>avg {stats.gas_prices.average}</span>
+                <span>fast {stats.gas_prices.fast}</span>
+              </div>
+            )}
           </div>
         </div>
       </main>
