@@ -21,6 +21,7 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
   app.get("/api/swap/quote", getSwapQuote);
+  app.get("/api/story/quote", getStoryQuote);
 
   return app;
 }
