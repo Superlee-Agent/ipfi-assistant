@@ -22,7 +22,10 @@ const chainKeywords: Record<string, Chain["key"]> = {
   bnb: "bnb",
 };
 
-export function detectChain(input: string, fallback: Chain["key"] = "base"): Chain["key"] {
+export function detectChain(
+  input: string,
+  fallback: Chain["key"] = "base",
+): Chain["key"] {
   const lower = input.toLowerCase();
   for (const [k, v] of Object.entries(chainKeywords)) {
     if (lower.includes(k)) return v;
@@ -30,7 +33,10 @@ export function detectChain(input: string, fallback: Chain["key"] = "base"): Cha
   return fallback;
 }
 
-export function normalizeTokenSymbol(chain: Chain["key"], token: string): string | undefined {
+export function normalizeTokenSymbol(
+  chain: Chain["key"],
+  token: string,
+): string | undefined {
   const cleaned = token.replace(/[^a-zA-Z0-9]/g, "");
   const known = findToken(chain, cleaned.toUpperCase());
   if (known) return known.symbol;
@@ -50,7 +56,9 @@ export function parseSwapPrompt(prompt: string): SwapIntent | null {
   const isBuySide = /(buy|dapatkan|mau.*terima)/.test(lower);
 
   const amount = parseAmount(prompt);
-  const tokens = TOKENS.filter((t) => t.chain === chain).map((t) => t.symbol.toLowerCase());
+  const tokens = TOKENS.filter((t) => t.chain === chain).map((t) =>
+    t.symbol.toLowerCase(),
+  );
   const symbols = Array.from(new Set(tokens));
 
   const foundSymbols: string[] = [];
@@ -65,12 +73,16 @@ export function parseSwapPrompt(prompt: string): SwapIntent | null {
   if (foundSymbols.length >= 2) {
     // Prefer order around "to" or "ke"
     const toIdx = Math.min(
-      ...[lower.indexOf(" to "), lower.indexOf(" ke ")].filter((i) => i >= 0)
+      ...[lower.indexOf(" to "), lower.indexOf(" ke ")].filter((i) => i >= 0),
     );
     if (toIdx >= 0) {
       // token before -> sell, after -> buy
-      const before = foundSymbols.find((s) => lower.indexOf(s.toLowerCase()) < toIdx);
-      const after = foundSymbols.find((s) => lower.indexOf(s.toLowerCase()) > toIdx);
+      const before = foundSymbols.find(
+        (s) => lower.indexOf(s.toLowerCase()) < toIdx,
+      );
+      const after = foundSymbols.find(
+        (s) => lower.indexOf(s.toLowerCase()) > toIdx,
+      );
       sellToken = before;
       buyToken = after;
     } else {
@@ -87,7 +99,13 @@ export function parseSwapPrompt(prompt: string): SwapIntent | null {
 
   if (!sellToken || !buyToken || !amount) return null;
 
-  return { chain, sellToken, buyToken, amount, side: isBuySide ? "buy" : "sell" };
+  return {
+    chain,
+    sellToken,
+    buyToken,
+    amount,
+    side: isBuySide ? "buy" : "sell",
+  };
 }
 
 export function toBaseUnits(amount: string, decimals: number): string {

@@ -1,10 +1,18 @@
 import { getIPAsset } from "./ipAsset";
 
-export type RoyaltyRecord = { id: string; assetId: string; amount: string; timestamp: number };
+export type RoyaltyRecord = {
+  id: string;
+  assetId: string;
+  amount: string;
+  timestamp: number;
+};
 
 const royalties = new Map<string, RoyaltyRecord[]>();
 
-export function distributeRoyalty(assetId: string, amount: string): RoyaltyRecord {
+export function distributeRoyalty(
+  assetId: string,
+  amount: string,
+): RoyaltyRecord {
   if (!getIPAsset(assetId)) throw new Error("IP Asset tidak ditemukan");
   if (!/^\d*(?:\.\d+)?$/.test(amount)) throw new Error("Jumlah tidak valid");
   const rec: RoyaltyRecord = {

@@ -1,4 +1,9 @@
-export type IPAsset = { id: string; name: string; owner: string; createdAt: number };
+export type IPAsset = {
+  id: string;
+  name: string;
+  owner: string;
+  createdAt: number;
+};
 
 const assets = new Map<string, IPAsset>();
 
@@ -17,6 +22,7 @@ export function getIPAsset(id: string): IPAsset | null {
 function cryptoRandom(len: number) {
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
   let out = "";
-  for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
+  for (let i = 0; i < len; i++)
+    out += chars[Math.floor(Math.random() * chars.length)];
   return out;
 }

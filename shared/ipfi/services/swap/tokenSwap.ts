@@ -1,4 +1,9 @@
-import { CHAINS, Chain, findToken, nativeTokenAddress } from "../../utils/config";
+import {
+  CHAINS,
+  Chain,
+  findToken,
+  nativeTokenAddress,
+} from "../../utils/config";
 import { toBaseUnits } from "../../utils/helpers";
 
 export type ZeroExQuote = {
@@ -29,7 +34,10 @@ export type GetQuoteParams = {
   side?: "sell" | "buy"; // amount refers to sell or buy side
 };
 
-function tokenToParam(chain: Chain["key"], token: string): { id: string; decimals: number } {
+function tokenToParam(
+  chain: Chain["key"],
+  token: string,
+): { id: string; decimals: number } {
   if (/^0x[a-fA-F0-9]{40}$/.test(token)) {
     return { id: token, decimals: 18 };
   }
@@ -44,7 +52,10 @@ function tokenToParam(chain: Chain["key"], token: string): { id: string; decimal
     bnb: "BNB",
   };
   const isNative = known.symbol.toUpperCase() === nativeSymbols[chain];
-  return { id: isNative ? nativeSymbols[chain] : known.address, decimals: known.decimals };
+  return {
+    id: isNative ? nativeSymbols[chain] : known.address,
+    decimals: known.decimals,
+  };
 }
 
 export async function getQuote(params: GetQuoteParams): Promise<ZeroExQuote> {
@@ -65,9 +76,10 @@ export async function getQuote(params: GetQuoteParams): Promise<ZeroExQuote> {
   }
   if (taker) query.set("takerAddress", taker);
 
-  const url = (typeof window === "undefined")
-    ? `${base}/swap/v1/quote?${query.toString()}`
-    : `/api/swap/quote?chain=${encodeURIComponent(chain)}&${query.toString()}`;
+  const url =
+    typeof window === "undefined"
+      ? `${base}/swap/v1/quote?${query.toString()}`
+      : `/api/swap/quote?chain=${encodeURIComponent(chain)}&${query.toString()}`;
   const res = await fetch(url);
   if (!res.ok) {
     const text = await res.text();

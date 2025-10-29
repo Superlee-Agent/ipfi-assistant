@@ -1,10 +1,20 @@
 import { getIPAsset } from "./ipAsset";
 
-export type License = { id: string; assetId: string; licensee: string; terms: string; createdAt: number };
+export type License = {
+  id: string;
+  assetId: string;
+  licensee: string;
+  terms: string;
+  createdAt: number;
+};
 
 const licenses = new Map<string, License[]>();
 
-export function addLicense(assetId: string, licensee: string, terms: string): License {
+export function addLicense(
+  assetId: string,
+  licensee: string,
+  terms: string,
+): License {
   if (!getIPAsset(assetId)) throw new Error("IP Asset tidak ditemukan");
   const l: License = {
     id: `lic_${Math.random().toString(36).slice(2, 10)}`,

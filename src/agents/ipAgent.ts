@@ -1,4 +1,8 @@
-import { registerIPAsset, getLicenses, distributeRoyalty } from "../services/story";
+import {
+  registerIPAsset,
+  getLicenses,
+  distributeRoyalty,
+} from "../services/story";
 
 export type IPAction =
   | { type: "register"; name: string; owner: string }

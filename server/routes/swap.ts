@@ -17,7 +17,10 @@ export const getSwapQuote: RequestHandler = async (req, res) => {
 
     const r = await fetch(url.toString());
     const text = await r.text();
-    res.status(r.status).type(r.headers.get("content-type") ?? "application/json").send(text);
+    res
+      .status(r.status)
+      .type(r.headers.get("content-type") ?? "application/json")
+      .send(text);
   } catch (err: any) {
     res.status(500).json({ error: err?.message ?? String(err) });
   }

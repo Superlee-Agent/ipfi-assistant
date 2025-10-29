@@ -57,7 +57,9 @@ export default function Index() {
             <span className="font-semibold">IP Assistant</span>
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Button size="sm" className="gap-2"><WalletMinimal className="h-4 w-4" /> Connect Wallet</Button>
+            <Button size="sm" className="gap-2">
+              <WalletMinimal className="h-4 w-4" /> Connect Wallet
+            </Button>
           </div>
         </div>
       </header>
@@ -100,17 +102,28 @@ export default function Index() {
 
       <div className="border-t">
         <div className="max-w-6xl mx-auto px-4 py-2 flex items-center gap-2.5 text-sm">
-          <span className="text-xs px-2 py-0.5 rounded-full bg-fuchsia-500/15 text-fuchsia-300 border border-fuchsia-500/30">Story Chain</span>
+          <span className="text-xs px-2 py-0.5 rounded-full bg-fuchsia-500/15 text-fuchsia-300 border border-fuchsia-500/30">
+            Story Chain
+          </span>
           {price !== null && (
             <span className="text-xs text-muted-foreground">
-              STORY ${price.toFixed(2)} {change !== null && (
-                <em className={cn("not-italic ml-1", change >= 0 ? "text-emerald-400" : "text-rose-400")}>{change >= 0 ? `+${change}%` : `${change}%`}</em>
+              STORY ${price.toFixed(2)}{" "}
+              {change !== null && (
+                <em
+                  className={cn(
+                    "not-italic ml-1",
+                    change >= 0 ? "text-emerald-400" : "text-rose-400",
+                  )}
+                >
+                  {change >= 0 ? `+${change}%` : `${change}%`}
+                </em>
               )}
             </span>
           )}
           {stats?.gas_prices && (
             <span className="text-xs text-muted-foreground ml-2">
-              Gas: slow {stats.gas_prices.slow} avg {stats.gas_prices.average} fast {stats.gas_prices.fast}
+              Gas: slow {stats.gas_prices.slow} avg {stats.gas_prices.average}{" "}
+              fast {stats.gas_prices.fast}
             </span>
           )}
         </div>
@@ -122,13 +135,13 @@ export default function Index() {
 function ChatBubble({ role, text }: { role: Message["role"]; text: string }) {
   const isAssistant = role === "assistant";
   return (
-    <div className={cn("flex", isAssistant ? "justify-start" : "justify-end") }>
+    <div className={cn("flex", isAssistant ? "justify-start" : "justify-end")}>
       <div
         className={cn(
           "max-w-[80%] rounded-2xl px-4 py-3 text-sm shadow-md",
           isAssistant
             ? "bg-muted/30 border text-foreground"
-            : "bg-primary text-primary-foreground"
+            : "bg-primary text-primary-foreground",
         )}
       >
         {text}

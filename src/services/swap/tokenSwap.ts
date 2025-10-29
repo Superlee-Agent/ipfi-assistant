@@ -1,4 +1,9 @@
-import { CHAINS, Chain, findToken, nativeTokenAddress } from "../../utils/config";
+import {
+  CHAINS,
+  Chain,
+  findToken,
+  nativeTokenAddress,
+} from "../../utils/config";
 import { toBaseUnits } from "../../utils/helpers";
 
 export type ZeroExQuote = {
@@ -29,7 +34,10 @@ export type GetQuoteParams = {
   side?: "sell" | "buy"; // amount refers to sell or buy side
 };
 
-function tokenToAddress(chain: Chain["key"], token: string): { address: string; decimals: number } {
+function tokenToAddress(
+  chain: Chain["key"],
+  token: string,
+): { address: string; decimals: number } {
   if (/^0x[a-fA-F0-9]{40}$/.test(token)) {
     // Address provided; assume 18 decimals by default (most ERC-20) and 18 for native placeholder address
     return { address: token, decimals: 18 };
@@ -57,9 +65,10 @@ export async function getQuote(params: GetQuoteParams): Promise<ZeroExQuote> {
   }
   if (taker) query.set("takerAddress", taker);
 
-  const url = (typeof window === "undefined")
-    ? `${base}/swap/v1/quote?${query.toString()}`
-    : `/api/swap/quote?chain=${encodeURIComponent(chain)}&${query.toString()}`;
+  const url =
+    typeof window === "undefined"
+      ? `${base}/swap/v1/quote?${query.toString()}`
+      : `/api/swap/quote?chain=${encodeURIComponent(chain)}&${query.toString()}`;
   const res = await fetch(url);
   if (!res.ok) {
     const text = await res.text();

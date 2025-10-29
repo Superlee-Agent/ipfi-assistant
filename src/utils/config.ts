@@ -162,10 +162,12 @@ export const TOKENS: Token[] = [
 
 export const getChain = (key: Chain["key"]): Chain => CHAINS[key];
 
-export const findToken = (chain: Chain["key"], symbol: string): Token | undefined =>
+export const findToken = (
+  chain: Chain["key"],
+  symbol: string,
+): Token | undefined =>
   TOKENS.find(
-    (t) => t.chain === chain && t.symbol.toLowerCase() === symbol.toLowerCase()
+    (t) => t.chain === chain && t.symbol.toLowerCase() === symbol.toLowerCase(),
   );
 
-export const nativeTokenAddress =
-  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+export const nativeTokenAddress = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
